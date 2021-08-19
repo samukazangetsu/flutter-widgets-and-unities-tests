@@ -2,6 +2,8 @@ import 'package:bytebank/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'matchers.dart';
+
 void main() {
   Future<void> pumpWidget({
     @required Widget widget,
@@ -61,15 +63,4 @@ void main() {
 
     expect(nameTransactionFeedFeatureItem, findsOneWidget);
   });
-}
-
-bool featureItemMatcher({
-  @required Widget widget,
-  @required String name,
-  @required IconData icon,
-}) {
-  if (widget is FeatureItem) {
-    return widget.name == name && widget.icon == icon;
-  }
-  return false;
 }
