@@ -6,10 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'matchers.dart';
+import 'mocks.dart';
 
 void main() {
   testWidgets('Should save a contact', (WidgetTester tester) async {
-    await tester.pumpWidget(BytebankApp());
+    final mockContactDao = MockContactDao();
+    await tester.pumpWidget(
+      BytebankApp(
+        contactDao: mockContactDao,
+      ),
+    );
 
     final dashboard = find.byType(Dashboard);
 
@@ -26,19 +32,46 @@ void main() {
     expect(transferFeatureItem, findsOneWidget);
 
     await tester.tap(transferFeatureItem);
-    await tester.pump();
-    await tester.pump();
+    await tester.pumpAndSettle();
 
-    final contactList = find.byType(ContactsList);
-    expect(contactList, findsOneWidget);
+    final contacstList = find.byType(ContactsList);
+    expect(contacstList, findsOneWidget);
 
     final fabNewContact = find.widgetWithIcon(FloatingActionButton, Icons.add);
     expect(fabNewContact, findsOneWidget);
 
     await tester.tap(fabNewContact);
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     final contactForm = find.byType(ContactForm);
     expect(contactForm, findsOneWidget);
+
+    final nameTextField = find.byWidgetPredicate((Widget widget) {
+      if (widget is TextField) {
+        return widget.decoration.labelText == 'Full name';
+      }
+      return false;
+    });
+    expect(nameTextField, findsOneWidget);
+
+    await tester.enterText(nameTextField, 'Samuel');
+
+    final accountNumberTextField = find.byWidgetPredicate((Widget widget) {
+      if (widget is TextField) {
+        return widget.decoration.labelText == 'Account number';
+      }
+      return false;
+    });
+    expect(accountNumberTextField, findsOneWidget);
+
+    await tester.enterText(accountNumberTextField, '1200');
+
+    final createButton = find.widgetWithText(ElevatedButton, 'Create');
+    expect(createButton, findsOneWidget);
+    await tester.tap(createButton);
+    await tester.pumpAndSettle();
+
+    final contactsListBack = find.byType(ContactsList);
+    expect(contactsListBack, findsOneWidget);
   });
 }
