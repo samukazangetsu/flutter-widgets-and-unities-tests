@@ -10,8 +10,11 @@ import '../mocks/mocks.dart';
 import 'events/events.dart';
 
 void main() {
+  MockContactDao mockContactDao;
+  setUp(() async {
+    mockContactDao = MockContactDao();
+  });
   testWidgets('Should transfer to a contact', (WidgetTester tester) async {
-    final mockContactDao = MockContactDao();
     await tester.pumpWidget(
       BytebankApp(
         contactDao: mockContactDao,
