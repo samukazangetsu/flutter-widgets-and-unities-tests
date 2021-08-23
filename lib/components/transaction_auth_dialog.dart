@@ -1,3 +1,4 @@
+import 'package:bytebank/utils/consts.dart';
 import 'package:flutter/material.dart';
 
 class TransactionAuthDialog extends StatefulWidget {
@@ -12,7 +13,6 @@ class TransactionAuthDialog extends StatefulWidget {
 }
 
 class _TransactionAuthDialogState extends State<TransactionAuthDialog> {
-
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -20,6 +20,7 @@ class _TransactionAuthDialogState extends State<TransactionAuthDialog> {
     return AlertDialog(
       title: Text('Authenticate'),
       content: TextField(
+        key: transactionAuthDialogTextFieldKey,
         controller: _passwordController,
         obscureText: true,
         maxLength: 4,

@@ -1,3 +1,4 @@
+import 'package:bytebank/http/webclients/transaction_webclient.dart';
 import 'package:bytebank/main.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_form.dart';
@@ -14,8 +15,10 @@ import 'events/events.dart';
 void main() {
   testWidgets('Should save a contact', (WidgetTester tester) async {
     final mockContactDao = MockContactDao();
+    final transactionWebClient = TransactionWebClient();
     await tester.pumpWidget(
       BytebankApp(
+        transactionWebClient: transactionWebClient,
         contactDao: mockContactDao,
       ),
     );

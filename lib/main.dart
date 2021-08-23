@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     BytebankApp(
+      transactionWebClient: TransactionWebClient(),
       contactDao: ContactDao(),
     ),
   );
