@@ -11,3 +11,10 @@ bool featureItemMatcher({
   }
   return false;
 }
+
+bool textByLabelTextMatcher(Widget widget, String labelText) {
+  if (widget is TextField) {
+    return widget.decoration.labelText == labelText;
+  }
+  return false;
+}

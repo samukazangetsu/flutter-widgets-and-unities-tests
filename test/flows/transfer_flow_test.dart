@@ -1,23 +1,29 @@
+import 'package:bytebank/components/transaction_auth_dialog.dart';
 import 'package:bytebank/main.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts_list.dart';
 import 'package:bytebank/screens/dashboard.dart';
 import 'package:bytebank/screens/transaction_form.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../matchers/matchers.dart';
 import '../mocks/mocks.dart';
 import 'events/events.dart';
 
 void main() {
   MockContactDao mockContactDao;
+  MockTransactionWebClient mockTransactionWebClient;
   setUp(() async {
     mockContactDao = MockContactDao();
+    mockTransactionWebClient = MockTransactionWebClient();
   });
   testWidgets('Should transfer to a contact', (WidgetTester tester) async {
     await tester.pumpWidget(
       BytebankApp(
         contactDao: mockContactDao,
+        transactionWebClient: mockTransactionWebClient,
       ),
     );
 
@@ -53,5 +59,26 @@ void main() {
 
     final transactionForm = find.byType(TransactionForm);
     expect(transactionForm, findsOneWidget);
+
+    final contactName = find.text('Samuel');
+    expect(contactName, findsOneWidget);
+
+    final contactAccountNumber = find.text('1200');
+    expect(contactAccountNumber, findsOneWidget);
+
+    final textFieldValue = find.byWidgetPredicate((widget) {
+      return textByLabelTextMatcher(widget, 'Value');
+    });
+    expect(textFieldValue, findsOneWidget);
+
+    await tester.enterText(textFieldValue, '200');
+
+    final transferButton = find.widgetWithText(ElevatedButton, 'Transfer');
+    expect(transferButton, findsOneWidget);
+    await tester.tap(transferButton);
+    await tester.pumpAndSettle();
+
+    final transacationAuthDialog = find.byType(TransactionAuthDialog);
+    expect(transacationAuthDialog, findsOneWidget);
   });
 }

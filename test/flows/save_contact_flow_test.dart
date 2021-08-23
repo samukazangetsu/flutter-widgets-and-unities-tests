@@ -42,14 +42,14 @@ void main() {
     expect(contactForm, findsOneWidget);
 
     final nameTextField = find.byWidgetPredicate(
-      (Widget widget) => _textFieldMatcher(widget, 'Full name'),
+      (Widget widget) => textByLabelTextMatcher(widget, 'Full name'),
     );
     expect(nameTextField, findsOneWidget);
 
     await tester.enterText(nameTextField, 'Samuel');
 
     final accountNumberTextField = find.byWidgetPredicate(
-      (Widget widget) => _textFieldMatcher(widget, 'Account number'),
+      (Widget widget) => textByLabelTextMatcher(widget, 'Account number'),
     );
     expect(accountNumberTextField, findsOneWidget);
 
@@ -67,11 +67,4 @@ void main() {
 
     verify(mockContactDao.findAll());
   });
-}
-
-bool _textFieldMatcher(Widget widget, String labelText) {
-  if (widget is TextField) {
-    return widget.decoration.labelText == labelText;
-  }
-  return false;
 }
