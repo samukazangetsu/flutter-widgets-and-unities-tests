@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'matchers.dart';
-import 'mocks.dart';
+import '../matchers/matchers.dart';
+import '../mocks/mocks.dart';
+import 'events/events.dart';
 
 void main() {
   testWidgets('Should save a contact', (WidgetTester tester) async {
@@ -23,17 +24,7 @@ void main() {
 
     expect(dashboard, findsOneWidget);
 
-    final transferFeatureItem = find.byWidgetPredicate(
-      (widget) => featureItemMatcher(
-        widget: widget,
-        name: 'Transfer',
-        icon: Icons.monetization_on,
-      ),
-    );
-
-    expect(transferFeatureItem, findsOneWidget);
-
-    await tester.tap(transferFeatureItem);
+    await clickOnTheTransferFeatureItem(tester);
     await tester.pumpAndSettle();
 
     final contacstList = find.byType(ContactsList);
